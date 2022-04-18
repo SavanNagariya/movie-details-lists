@@ -2,6 +2,7 @@ const db = require("../data/database");
 const { ObjectId } = require("mongodb");
 class Movie {
   constructor(
+    id,
     name,
     subname,
     type,
@@ -11,9 +12,9 @@ class Movie {
     date,
     hours,
     minutes,
-    rating,
-    id
+    rating
   ) {
+    this.id = id;
     this.name = name;
     this.subname = subname;
     this.type = type;
@@ -24,7 +25,6 @@ class Movie {
     this.hours = hours;
     this.minutes = minutes;
     this.rating = rating;
-    this.id = id;
   }
 
   static async findAll() {
@@ -53,6 +53,13 @@ class Movie {
     } else {
       return db.getDb().collection("movieList").insertOne(dataList);
     }
+  }
+  delete() {
+    const movieId = ObjectId(this.id);
+    console.log(movieId);
+
+    // return db.getDb().collection("movieList").deleteOne({ _id: movieId });
+    return db.getDb().collection("movieList").deleteOne({ _id: movieId });
   }
 }
 

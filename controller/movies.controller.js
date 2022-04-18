@@ -15,6 +15,7 @@ const viewMovie = async (req, res, next) => {
 
 const addMovie = async (req, res, next) => {
   const movie = new Movie(
+    null,
     req.body.name,
     req.body.subname,
     req.body.type,
@@ -38,6 +39,7 @@ const addMovie = async (req, res, next) => {
 };
 const updateMovie = async (req, res, next) => {
   const movie = new Movie(
+    req.params.id,
     req.body.name,
     req.body.subname,
     req.body.type,
@@ -47,8 +49,7 @@ const updateMovie = async (req, res, next) => {
     req.body.date,
     req.body.hours,
     req.body.minutes,
-    req.body.rating,
-    req.params.id
+    req.body.rating
   );
 
   let updateMovie;
@@ -58,10 +59,18 @@ const updateMovie = async (req, res, next) => {
     next(error);
     return;
   }
-  res.json();
+  res.json({ message: "movies updated", updated: movie });
 };
-const deleteMovie = (req, res, next) => {
-  res.json();
+const deleteMovie = async (req, res, next) => {
+  const movie = new Movie(req.params.id);
+
+  try {
+    await movie.delete();
+  } catch (error) {
+    next(error);
+    return;
+  }
+  res.json({ message: "deleted" });
 };
 
 module.exports = {

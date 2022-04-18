@@ -13,7 +13,7 @@ app.use("/movie", movieRoute);
 
 app.use((error, req, res, next) => {
   res.status(500).json({
-    message: "Something is wrong",
+    message: "Something is wrong" + error,
   });
 });
 

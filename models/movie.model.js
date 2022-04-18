@@ -1,5 +1,5 @@
 const db = require("../data/database");
-
+const { ObjectId } = require("mongodb");
 class Movie {
   constructor(
     name,
@@ -11,7 +11,8 @@ class Movie {
     date,
     hours,
     minutes,
-    rating
+    rating,
+    id
   ) {
     this.name = name;
     this.subname = subname;
@@ -23,6 +24,7 @@ class Movie {
     this.hours = hours;
     this.minutes = minutes;
     this.rating = rating;
+    this.id = id;
   }
 
   static async findAll() {
@@ -42,7 +44,15 @@ class Movie {
       minutes: this.minutes,
       rating: this.rating,
     };
-    return db.getDb().collection("movieList").insertOne(dataList);
+    if (this.id) {
+      const movieId = ObjectId(this.id);
+      return db
+        .getDb()
+        .collection("movieList")
+        .updateOne({ _id: movieId }, { $set: dataList });
+    } else {
+      return db.getDb().collection("movieList").insertOne(dataList);
+    }
   }
 }
 

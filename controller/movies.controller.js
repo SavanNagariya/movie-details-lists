@@ -26,7 +26,6 @@ const addMovie = async (req, res, next) => {
     req.body.minutes,
     req.body.rating
   );
-  console.log(movie);
 
   try {
     const result = movie.save();
@@ -37,7 +36,28 @@ const addMovie = async (req, res, next) => {
 
   res.json({ message: "insert is successfully", insertMovie: movie });
 };
-const updateMovie = (req, res, next) => {
+const updateMovie = async (req, res, next) => {
+  const movie = new Movie(
+    req.body.name,
+    req.body.subname,
+    req.body.type,
+    req.body.cast,
+    req.body.director,
+    req.body.budget,
+    req.body.date,
+    req.body.hours,
+    req.body.minutes,
+    req.body.rating,
+    req.params.id
+  );
+
+  let updateMovie;
+  try {
+    updateMovie = movie.save();
+  } catch (error) {
+    next(error);
+    return;
+  }
   res.json();
 };
 const deleteMovie = (req, res, next) => {
